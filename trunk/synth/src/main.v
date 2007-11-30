@@ -111,6 +111,8 @@ wire[15:0] wir_dri;  // The input data bus (from internal memory).
 wire       wir_fgi;  // The effective character input flag.
 wire       wir_fgo;  // The effective character output flag.
 wire       wir_i;    // The indirect flag part of wir_dri.
+wire[15:0] wir_idri; // The incremented wir_dri, forced down to 16 bits to
+                     // avoid horrible breakage.
 wire[2:0]  wir_op;   // The 3-bit opcode part of wir_dri.
 wire       wir_sign; // The accumulator sign flag.
 
@@ -121,6 +123,7 @@ assign wir_ar   = wir_dri[11:0];
 assign wir_fgi  = io_fgi | io_fgiset;
 assign wir_fgo  = io_fgo | io_fgoset;
 assign wir_i    = wir_dri[15];
+assign wir_idri = wir_dri + 1;
 assign wir_int  = reg_ien && (wir_fgi || wir_fgo);
 assign wir_op   = wir_dri[14:12];
 assign wir_sign = reg_ac[15];
@@ -149,8 +152,8 @@ begin
     reg_ien <= 0;
     reg_pc  <= 0;
     
-    reg_s  <= 1;              // Initially the processor is not halted.
-    reg_sc <= par_sc_instreq; // Fetch the first instruction.
+    reg_s  <= 1;               // Initially the processor is not halted.
+    reg_sc <= par_sc_instwait; // Wait for the first instruction.
 end
 
 
@@ -275,9 +278,7 @@ begin
                     begin
                         // Branch.
                         if (wir_op == par_op_bun)
-                        begin
                             tsk_fetch(wir_ar);
-                        end
                         else
                             reg_pc <= wir_ar + 1;
                     end
@@ -376,8 +377,8 @@ begin
         par_sc_iszexec:
         begin
             reg_memwe <= 1;
-            reg_dro <= wir_dri + 1;
-            if ((wir_dri + 1) == 0)
+            reg_dro <= wir_idri;
+            if (wir_idri == 0)
             begin
                 reg_pc <= reg_pc + 1;
             end

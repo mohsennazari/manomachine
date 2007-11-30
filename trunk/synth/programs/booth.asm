@@ -97,9 +97,9 @@ con,	cir
 // Program variables:
 
 // Three basic Booth variables
-ba,		dec 100		// "Add"
+ba,		dec 60		// "Add"
 bs,		dec 0		// "Subtract"
-bp,		dec 120		// "Product"
+bp,		dec 50		// "Product"
 
 sct,	dec -8		// bs setup loop counter
 act,	dec -8		// ba setup loop counter

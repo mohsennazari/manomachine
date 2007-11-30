@@ -13,7 +13,7 @@
 module sim();
 
 // Instantiate glbl for the XST primitives to use.
-glbl glbl();
+// glbl glbl();
 
 // Timing parameters (in ns).
 
