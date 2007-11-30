@@ -1,9 +1,15 @@
-// Fibonacci sequence generator
+//////////////////////////////////////////////////////////////////////////////
+// Mano machine project
+// (c) Greg Toombs 2007
+// 
+// speed.asm
+// 
+// The Fibonacci series sample program.
 // Tests direct and indirect memory, adding, and branching.
 
 // Interrupt return address
 org 000
-ira,	hex lop
+ira,	bun lop
 
 // Interrupt vector
 org 001
@@ -11,7 +17,6 @@ org 001
 		bun ira i
 
 // Program start
-org 030
 		// Add the two numbers and halt on carry
 lop,	lda pn1 i
 		add pn2 i

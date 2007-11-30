@@ -7,12 +7,11 @@
 // The Fibonacci series sample program.
 
 org 000
-ira,	hex lop
+ira,	bun lop
 
 org 001
 		bun ira i
 		
-org 030
 lop,	add n00
 		sze
 		bun fin
