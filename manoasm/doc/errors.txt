@@ -1,0 +1,37 @@
+List of possible error codes:
+
+// Fatal errors:
+A0001: Could not open input file
+A0002: Could not open output file
+A0003: Could not open input file on second pass
+A0004: Line longer than 80 characters encountered
+A0005: Attempt to assemble past address FFF
+A0006: Symbol table is full
+
+// Parsing Errors:
+A1001: Label is an invalid identifier
+A1002: Too many arguments before comma
+A1003: Invalid Instruction Encountered
+A1004: Unexpected text in Indirect Column
+A1005: Instruction expected
+A1006: Invalid text after indirect bit
+A1007: Indirect bit invalid for this instruction
+A1008: Operand invalid for this instruction
+A1009: Operand must be a positive numeric for ORG
+A1010: Operand must be a numeric for DEC
+A1011: Operand must be a hex numeric for HEX
+A1012: Operand expected
+A1013: Addresses must be between 000 and FFF
+A1014: Label invalid for this instruction
+
+// Assembly Errors:
+A2000: Duplicate symbol encountered
+A2001: Undeclared symbol encountered
+
+// Warnings:
+A3000: ORG not encountered.  Assuming 000 as origin.
+
+// StringList errors:
+SL1001: Could not open input file
+SL1002: I/O error reading input file
+SL1003: Line longer than 80 characters encountered

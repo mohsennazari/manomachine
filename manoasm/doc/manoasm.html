@@ -1,0 +1,364 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="Mark Roth">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (WinNT; I) [Netscape]">
+   <TITLE>MANOASM Reference Manual</TITLE>
+</HEAD>
+<BODY>
+
+<H1>
+MANOASM Reference Manual</H1>
+
+<H2>
+1. Introduction</H2>
+This document describes the operation of <I>manoasm</I>, an assembler for
+the fictitious Mano Machine that assembles mano source files (*.asm) into
+Mano Simulator module files (*.m).&nbsp; For more information on the Mano
+instruction set and assembly language syntax, please see M. Mano's Computer
+System Architecture book, listed in the <A HREF="#References">references</A>
+section.&nbsp; Mano Simulator module files are simply text files that contain
+a list of instructions that are readable by the Mano Simulator (see accompanying
+MANOSIM Reference manual for more details).
+<H2>
+2. Compilation</H2>
+The Mano Assembler is written in C++, and is designed to be compile-able
+under both the Sun and Windows 95 / NT systems.&nbsp; Because the source
+relies on only standard C++ libraries, little or no modification may be
+needed to port it to other platforms as well.&nbsp; If you are interested
+in porting the assembler to another platform, please <A HREF="mailto:mlr5773@rit.edu">send
+me mail</A>.
+<H3>
+2.1 On Sun Solaris Systems</H3>
+The source will successfully compile on a Solaris system running SPARC
+Compiler 4.2, and will work without modification for various other flavors
+as well.&nbsp; Simply define the __SOLARIS preprocessor symbol.&nbsp; A
+make file is provided that does this for you.&nbsp; To compile, therefore,
+change to the ManoAssembler directory, and simply type:
+<BR><TT>&nbsp;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make</TT>
+
+<P>Assuming your compiler is installed correctly, this should produce an
+executable file called <TT>manoasm</TT>.&nbsp; See <A HREF="#Invocation">Invocation</A>
+for details on how to execute the assembler.
+<H3>
+2.2 On Windows 95 / NT Systems</H3>
+The source will successfully compile with Microsoft Visual C++ 5.0, and
+will work without modification for various other flavors as well.&nbsp;
+Instructions for building the executable are as follows:
+<OL>
+<LI>
+Load Microsoft Developer Studio</LI>
+
+<LI>
+Click File, New.</LI>
+
+<LI>
+Select Win32 Console Application from the Projects tab.</LI>
+
+<LI>
+For the project name, type <TT>manoasm</TT>.</LI>
+
+<LI>
+For the location, browse to the ManoAssembler folder.</LI>
+
+<LI>
+Check the Win32 platform in the platforms box.</LI>
+
+<LI>
+Click OK to create the project files.</LI>
+
+<LI>
+Click Project, Add to Project, Files...</LI>
+
+<LI>
+Select all the .cpp and .h files in the folder, and click OK.</LI>
+
+<LI>
+Click Build, Set Active Configuration, and select the Release configuration.</LI>
+
+<LI>
+Finally, Click Build, Rebuild All to build the project.</LI>
+</OL>
+This should produce a folder called Release, containing the <TT>manoasm.exe</TT>
+executable file.&nbsp; To execute it, open up a Command Prompt, change
+directories, and run <TT>manoasm</TT>.&nbsp; See <A HREF="#Invocation">Invocation</A>
+for details on how to execute the assembler.
+<H2>
+<A NAME="Invocation"></A>3. Invocation</H2>
+The <TT>manoasm</TT> program has the following syntax:
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; manoasm &lt;<I>infile</I>>
+&lt;<I>outfile</I>></TT>
+
+<P>where <I><TT>infile</TT></I> is the name of the assembly source file,
+and <I><TT>outfile</TT></I> is the name of the Mano Simulator module file
+to create.&nbsp; The Mano Simulator module file produced can also be used
+as an assembly listing since it displays the addresses and source statements.&nbsp;
+See <A HREF="#OutputFormat">Output Format</A> for more information about
+this file.&nbsp; There are no other options associated with the assembler.
+<H2>
+<A NAME="OutputFormat"></A>4. Output Format</H2>
+The Mano Assembler produces three sets of output: the error listing, the
+symbol table, and the Mano Simulator Module file.
+<H3>
+4.1 The Error Listing</H3>
+The error listing is sent to the standard output device after the banner
+is displayed.&nbsp; See the <A HREF="#ErrorMessages">Error Messages</A>
+section for details on the format and meaning of error messages.
+<H3>
+4.2 The Symbol Table</H3>
+If there are no errors, a symbol table is produced, in the following format:
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LLL&nbsp;&nbsp;&nbsp;
+0xaaa</TT>
+
+<P>where <TT>LLL</TT> is the name of the label.&nbsp; As per Mano's specifications,
+the label must be a maximum of 3 characters.&nbsp; The <TT>aaa</TT> represents
+the address associated with the given symbol, in hexadecimal format.&nbsp;
+Because there are only 4096 bytes of memory available, a 3 digit hex number
+is sufficient.
+<H3>
+4.3 The Mano Simulator Module File</H3>
+If there are no errors, a Mano Simulator Module file is created at the
+specified path.&nbsp; The module file is simply a list of instructions
+for the Mano Simulator to execute in order to ensure that the machine code
+for the program given as input is placed in the correct area of memory
+in the simulator.&nbsp; For your convenience, a comment is attached to
+each line of the file stating the line of source that created it.&nbsp;
+In this respect, the module file can also be used as a listing.&nbsp; Each
+line of output is in the following format:
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m&nbsp;&nbsp;&nbsp; aaaa&nbsp;&nbsp;&nbsp;
+cccc&nbsp;&nbsp;&nbsp; / ssssss</TT>
+
+<P>where <TT>m</TT> is the physical character <TT>'m'</TT>, <TT>aaaa</TT>
+is the address that the given statement is being assembled at, <TT>cccc</TT>
+is the machine code representation of the statement, and <TT>ssssss</TT>
+is the source code representation of the statement.
+<H2>
+<A NAME="ErrorMessages"></A>5. Error Messages</H2>
+If there is an error in the source file, the Mano Assembler will list the
+errors that it found, and stop the assembly process.&nbsp; The errors that
+it lists have the following format:
+
+<P><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ffff(n) : tttt ooeeee:
+mmmmmm</TT>
+
+<P>where <TT>ffff</TT> is the name of the source file producing the error,
+<TT>n</TT> is the line of code that produced the error, <TT>tttt</TT> is
+the type of error, and can either be <TT>error</TT> (compilation cannot
+continue), or <TT>warning</TT> (compilation can continue), <TT>oo</TT>
+is the internal source of error, and can either be <TT>A</TT> (assembler
+error / warning) or <TT>SL</TT> (I/O error).&nbsp; The <TT>eeee</TT> represents
+the error number, used to identify the error.&nbsp; For assembler errors,
+the first digit of this number indicates the severity of the error (0 =
+Fatal Error, 1 = Parsing Error, 2 = Assembly Error, 3 = Warning).&nbsp;
+Finally, <TT>mmmmmm</TT> is a message describing the error.&nbsp; The following
+is a comprehensive table of all the different possible errors:
+<H4>
+Fatal Errors:</H4>
+
+<TABLE BORDER >
+<TR>
+<TD><TT>A0001</TT></TD>
+
+<TD>Could not open input file</TD>
+</TR>
+
+<TR>
+<TD><TT>A0002</TT></TD>
+
+<TD>Could not open output file</TD>
+</TR>
+
+<TR>
+<TD><TT>A0003</TT></TD>
+
+<TD>Could not open input file on second pass</TD>
+</TR>
+
+<TR>
+<TD><TT>A0004</TT></TD>
+
+<TD>Line longer than 80 characters encountered</TD>
+</TR>
+
+<TR>
+<TD><TT>A0005</TT></TD>
+
+<TD>Attempt to assemble past address FFF</TD>
+</TR>
+
+<TR>
+<TD><TT>A0006</TT></TD>
+
+<TD>Symbol table is full</TD>
+</TR>
+</TABLE>
+
+<H4>
+Parsing Errors:</H4>
+
+<TABLE BORDER >
+<TR>
+<TD><TT>A1001</TT></TD>
+
+<TD>Label is an invalid identifier</TD>
+</TR>
+
+<TR>
+<TD><TT>A1002</TT></TD>
+
+<TD>Too many arguments before comma</TD>
+</TR>
+
+<TR>
+<TD><TT>A1003</TT></TD>
+
+<TD>Invalid Instruction Encountered</TD>
+</TR>
+
+<TR>
+<TD><TT>A1004</TT></TD>
+
+<TD>Unexpected text in Indirect Column</TD>
+</TR>
+
+<TR>
+<TD><TT>A1005</TT></TD>
+
+<TD>Instruction expected&nbsp;</TD>
+</TR>
+
+<TR>
+<TD><TT>A1006</TT></TD>
+
+<TD>Invalid text after indirect bit</TD>
+</TR>
+
+<TR>
+<TD><TT>A1007</TT></TD>
+
+<TD>Indirect bit invalid for this instruction</TD>
+</TR>
+
+<TR>
+<TD><TT>A1008</TT></TD>
+
+<TD>Operand invalid for this instruction</TD>
+</TR>
+
+<TR>
+<TD><TT>A1009</TT></TD>
+
+<TD>Operand must be a positive numeric for ORG</TD>
+</TR>
+
+<TR>
+<TD><TT>A1010</TT></TD>
+
+<TD>Operand must be a numeric for DEC</TD>
+</TR>
+
+<TR>
+<TD><TT>A1011</TT></TD>
+
+<TD>Operand must be a hex numeric for HEX</TD>
+</TR>
+
+<TR>
+<TD><TT>A1012</TT></TD>
+
+<TD>Operand expected</TD>
+</TR>
+
+<TR>
+<TD><TT>A1013</TT></TD>
+
+<TD>Addresses must be between 000 and FFF</TD>
+</TR>
+
+<TR>
+<TD><TT>A1014</TT></TD>
+
+<TD>Label invalid for this instruction</TD>
+</TR>
+</TABLE>
+
+<H4>
+Assembly Errors:</H4>
+
+<TABLE BORDER >
+<TR>
+<TD><TT>A2000</TT></TD>
+
+<TD>Duplicate symbol encountered</TD>
+</TR>
+
+<TR>
+<TD><TT>A2001</TT></TD>
+
+<TD>Undeclared symbol encountered</TD>
+</TR>
+</TABLE>
+
+<H4>
+Warnings:</H4>
+
+<TABLE BORDER >
+<TR>
+<TD><TT>A3000</TT></TD>
+
+<TD>ORG not encountered.&nbsp; Assuming 000 as origin.</TD>
+</TR>
+</TABLE>
+
+<H4>
+I/O Errors:</H4>
+
+<TABLE BORDER >
+<TR>
+<TD><TT>SL1001</TT></TD>
+
+<TD>could not open input file.</TD>
+</TR>
+
+<TR>
+<TD><TT>SL1002</TT></TD>
+
+<TD>I/O error reading input file.</TD>
+</TR>
+
+<TR>
+<TD><TT>SL1003</TT></TD>
+
+<TD>Line longer than 80 characters encountered.</TD>
+</TR>
+</TABLE>
+
+<H2>
+6. Supported Instructions and Directives</H2>
+The Mano Assembler supports all instructions and directives present in
+M. Mano's specification.&nbsp; See the <A HREF="#References">References</A>
+section for a citation of Mano's Computer System Architecture book which
+contains the language specification.
+<H2>
+<A NAME="References"></A>7. References</H2>
+Mano, M. M., Computer System Architecture, 3rd ed. Englewood Cliffs, NJ:
+Prentice Hall, 1993.
+<H2>
+8. Final Notes</H2>
+This program was created by Mark Roth, a student at the Rochester Institute
+of Technology in Rochester, NY.&nbsp; If you have any questions, comments,
+suggestions, or bug reports, please do not hesitate to contact me.&nbsp;
+My contact information is as follows:
+<BR><TT>&nbsp;</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mark Roth</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rochester Institute
+of Technology</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; E-mail: <A HREF="mailto:mlr5773@rit.edu">mlr5773@rit.edu</A></TT>
+<BR>&nbsp;
+<BR><I>Last Updated: March 4, 1998</I>
+</BODY>
+</HTML>
