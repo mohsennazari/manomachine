@@ -270,7 +270,7 @@ void CManoAssembler::AssembleFromFile(
 // Name:	ParseSymbolic
 //
 void CManoAssembler::ParseSymbolic( const char *line ) {
-	char label[4];
+	char label[33];
 	char instruction[4];
 	char argument[11];
 	char indirect[2];
@@ -331,7 +331,7 @@ void CManoAssembler::ResetLocationCounter() {
 // Name:	Assemble
 //
 char *CManoAssembler::Assemble( const char *line ) {
-	char label[4];
+	char label[33];
 	char instruction[4];
 	char argument[11];
 	char indirect[2];
@@ -855,8 +855,8 @@ void CManoAssembler::SearchAndParseLabel( char *label, istrstream &input ) {
 	istrstream lstream( word, 80 );
 	lstream >> buffer;
 	
-	// Copy buffer into label, up to 3 characters:
-	strncpy( label, buffer, 4 );
+	// Copy buffer into label, up to 32 characters:
+	strncpy( label, buffer, 33 );
 	
 	// Do some syntax checking on the label:
 	if( !IsValidIdentifier( label ) ) {
@@ -951,7 +951,7 @@ void CManoAssembler::ParseIndirect( char *indirect, istrstream &input ) {
 bool CManoAssembler::IsValidIdentifier( char *identifier ) {
 
 	// If the identifier is more than 3 characters, it is invalid:
-	if( strlen( identifier ) > 3 ) {
+	if( strlen( identifier ) > 32 ) {
 		return false;
 	}
 
@@ -963,10 +963,18 @@ bool CManoAssembler::IsValidIdentifier( char *identifier ) {
 	// If the remaining characters are not alphanumeric, it is invalid:
 
 	for( unsigned int index = 1; index < strlen( identifier ); index++ ) {
-		if( !(((identifier[index] >= 'A') 
-			&& (identifier[index] <= 'Z')) 
-			|| ((identifier[index] >= '0') 
-			&& (identifier[index] <= '9'))) ) 
+		if( !(
+			(
+				(identifier[index] >= 'A') 
+				&& (identifier[index] <= 'Z')
+			) 
+			||
+			(
+				(identifier[index] >= '0') 
+				&& (identifier[index] <= '9')
+			)
+			|| identifier[index] == '_'
+			) ) 
 		{
 			return false;
 		}
