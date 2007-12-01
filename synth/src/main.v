@@ -379,9 +379,7 @@ begin
             reg_memwe <= 1;
             reg_dro <= wir_idri;
             if (wir_idri == 0)
-            begin
                 reg_pc <= reg_pc + 1;
-            end
             reg_sc <= par_sc_instreq;
         end
         
