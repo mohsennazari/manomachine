@@ -132,10 +132,10 @@ assign wir_sign = reg_ac[15];
 // Memory instantiation.
 cor_mem cor_mem_inst
 (
-	.addr(reg_ar   ),
-	.clk (io_clock ),
-	.din (reg_dro  ),
-	.dout(wir_dri  ),
+	.addr(reg_ar),
+	.clk (io_clock),
+	.din (reg_dro),
+	.dout(wir_dri),
 	.we  (reg_memwe)
 );
 
