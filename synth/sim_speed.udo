@@ -1,1 +1,1 @@
-source "tcl/sim_speed.tcl"
+source "tcl/sim_ppar.tcl"

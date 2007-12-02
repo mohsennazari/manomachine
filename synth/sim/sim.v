@@ -12,9 +12,6 @@
 // The simulation module.
 module sim();
 
-// Instantiate glbl for the XST primitives to use.
-// glbl glbl();
-
 // Timing parameters (in ns).
 
 parameter par_treset = 100; // The time to wait for reset to finish.

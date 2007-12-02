@@ -12,9 +12,6 @@
 // The speed benchmark module.
 module sim_speed();
 
-// Instantiate glbl for the XST primitives to use.
-// glbl glbl();
-
 // Timing parameters (in ns).
 
 // Assumed parameters:
