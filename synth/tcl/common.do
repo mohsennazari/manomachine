@@ -22,5 +22,3 @@ update
 WaveRestoreZoom {0 ps} {200 ns}
 
 set RunLength "100 ns"
-
-run 100ns

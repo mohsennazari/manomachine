@@ -1,5 +1,11 @@
 onerror {resume}
 
+vlib work
+vlog +acc "netgen/par/main_timesim.v"
+vlog +acc "sim/sim_speed.v"
+
+vsim +maxdelays -L simprims_ver -gui -sdftyp {/sim/uut=./main_timesim.sdf} work.sim
+
 add wave -noupdate -divider Input/Output
 add wave -noupdate -format Logic /sim/uut/io_clock
 add wave -noupdate -format Logic /sim/uut/io_fgi

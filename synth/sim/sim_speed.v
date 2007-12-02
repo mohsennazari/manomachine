@@ -10,7 +10,7 @@
 `timescale 1ns / 1ps
 
 // The speed benchmark module.
-module speed();
+module sim();
 
 // Instantiate glbl for the XST primitives to use.
 glbl glbl();
@@ -18,8 +18,8 @@ glbl glbl();
 // Timing parameters (in ns).
 
 // Assumed parameters:
-parameter par_tclock0   = 20; // The initial clock period.
-parameter par_treset    = 20; // The time to wait for reset to finish.
+parameter par_tclock0   = 8;   // The initial clock period.
+parameter par_treset    = 100; // The time to wait for reset to finish.
 
 // Timing variables.
 realtime tclock;
@@ -55,7 +55,7 @@ begin
     
 
     // Gradually increase the frequency to see when the processor breaks.
-    for (tclock = par_tclock0; tclock >= 0; tclock = tclock - 0.5)
+    for (tclock = par_tclock0; tclock >= 0; tclock = tclock - 0.01)
     begin
         reg_clock = ~reg_clock;
         #(tclock/2);
