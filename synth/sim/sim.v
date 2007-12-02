@@ -56,5 +56,5 @@ begin
         #(par_tclock/2);
     end
 end
-  
+
 endmodule

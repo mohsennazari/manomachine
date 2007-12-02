@@ -10,10 +10,10 @@
 `timescale 1ns / 1ps
 
 // The simulation module.
-module sim();
+module sim_ppar();
 
 // Instantiate glbl for the XST primitives to use.
-glbl glbl();
+// glbl glbl();
 
 // Timing parameters (in ns).
 
@@ -57,5 +57,5 @@ begin
         #(par_tclock/2);
     end
 end
-  
+
 endmodule
