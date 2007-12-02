@@ -15,7 +15,7 @@ module sim_speed();
 // Timing parameters (in ns).
 
 // Assumed parameters:
-parameter par_tclock0   = 8;   // The initial clock period.
+parameter par_tclock0   = 10;  // The initial clock period.
 parameter par_treset    = 100; // The time to wait for reset to finish.
 
 // Timing variables.
@@ -54,8 +54,6 @@ begin
     // Gradually increase the frequency to see when the processor breaks.
     for (tclock = par_tclock0; tclock >= 0; tclock = tclock - 0.01)
     begin
-        reg_clock = ~reg_clock;
-        #(tclock/2);
         reg_clock = ~reg_clock;
         #(tclock/2);
     end
