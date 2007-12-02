@@ -12,9 +12,6 @@
 // The simulation module.
 module sim_ppar();
 
-// Instantiate glbl for the XST primitives to use.
-// glbl glbl();
-
 // Timing parameters (in ns).
 
 // Assumed parameters:
