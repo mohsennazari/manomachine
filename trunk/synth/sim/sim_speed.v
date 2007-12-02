@@ -10,10 +10,10 @@
 `timescale 1ns / 1ps
 
 // The speed benchmark module.
-module sim();
+module sim_speed();
 
 // Instantiate glbl for the XST primitives to use.
-glbl glbl();
+// glbl glbl();
 
 // Timing parameters (in ns).
 
@@ -64,5 +64,5 @@ begin
     end
 
 end
-  
+
 endmodule
