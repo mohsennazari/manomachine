@@ -10,7 +10,7 @@
 `timescale 1ns / 1ps
 
 // The simulation module.
-module sim_ppar();
+module sim();
 
 // Instantiate glbl for the XST primitives to use.
 glbl glbl();
