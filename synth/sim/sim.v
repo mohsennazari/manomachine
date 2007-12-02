@@ -15,7 +15,7 @@ module sim();
 // Timing parameters (in ns).
 
 parameter par_treset = 100; // The time to wait for reset to finish.
-parameter par_tclock = 6.5; // The clock period to use.
+parameter par_tclock = 10;  // The clock period to use.
 
 
 // Input drivers.

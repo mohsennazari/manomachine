@@ -12,11 +12,16 @@
 // The simulation module.
 module sim_ppar();
 
+// Behavioural parameters.
+
+parameter par_input = 0; // Should we send input data (for the booth
+                         // multiplier)?
+
 // Timing parameters (in ns).
 
 // Assumed parameters:
 parameter par_treset = 100;  // The time to wait for reset to finish.
-parameter par_tclock = 10.0; // The clock period to use.
+parameter par_tclock = 10;   // The clock period to use.
 
 
 // Input drivers.
@@ -34,6 +39,15 @@ main_ppar uut (
     .io_inpr(reg_inpr)
 );
 
+task tick;
+begin
+    reg_clock <= 1;
+    #(par_tclock/2);
+    reg_clock <= 0;
+    #(par_tclock/2);
+end
+endtask
+
 
 // The main simulation block.
 initial
@@ -50,8 +64,43 @@ begin
     // Run the clock forever.
     forever
     begin
-        reg_clock = ~reg_clock;
-        #(par_tclock/2);
+        if (!uut.io_fgo)
+        begin
+            // Slow output device
+            repeat (10)
+                tick();
+            $display("Output: 8'h%h", uut.io_outr);
+            reg_fgoset <= 1;
+            tick();
+            reg_fgoset <= 0;
+            
+            // If the processor output an ascii ENQ, we give it two numbers to
+            // multiply:
+            if (uut.io_outr == 8'h05 && par_input)
+            begin
+                // Slow input device
+                repeat (10)
+                    tick();
+                reg_inpr <= 60;
+                reg_fgiset <= 1;
+                tick();
+                reg_fgiset <= 0;
+                
+                while (uut.io_fgi)
+                    tick();
+                
+                repeat (10)
+                    tick();
+                reg_inpr <= 50;
+                reg_fgiset <= 1;
+                tick();
+                reg_fgiset <= 0;
+                
+                while (uut.io_fgi)
+                    tick();
+            end
+        end
+        tick();
     end
 end
 
