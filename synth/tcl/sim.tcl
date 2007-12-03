@@ -1,9 +1,6 @@
 onerror {resume}
 
-add mem {uut/pri_mem0/mem} -a hexadecimal -d hexadecimal -wo 16
-add mem {uut/pri_mem1/mem} -a hexadecimal -d hexadecimal -wo 16
-add mem {uut/pri_mem2/mem} -a hexadecimal -d hexadecimal -wo 16
-add mem {uut/pri_mem3/mem} -a hexadecimal -d hexadecimal -wo 16
+add mem {uut/cor_mem_inst/inst/mem} -a hexadecimal -d hexadecimal -wo 4
 
 add wave -noupdate -divider Input/Output
 add wave -noupdate -format  Logic                      uut/io_clock
